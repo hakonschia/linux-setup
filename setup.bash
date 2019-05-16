@@ -43,8 +43,30 @@ if [[ $bashrc != *"PROMPT_DIRTRIM"* ]]; then
 fi
 
 
-# If dconf-editor is installed, change various settings with it
-if [ $(dpkg-query -W -f='${Status}' dconf-editor 2>/dev/null | grep -c "ok installed") -eq 1 ]; then
+dconfInstalled=false
+# If dconf-editor is not installed, ask if the user wants to install it
+if [ $(dpkg-query -W -f='${Status}' dconf-editor 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+    echo "dconf-editor is not installed, do you want to install it? (y/n)"
+    read -r answer
+
+    case $answer in
+        "y")
+            if [ $(id -u) -eq 0 ]; then # is root, install dconf-editor
+                apt install dconf-editor
+                dconfInstalled=true
+            else
+                echo "Error: Need root permissions to install dconf-editor, run with sudo"
+            fi
+            ;;
+        *)
+            ;;
+    esac
+else
+    dconfInstalled=true
+fi
+
+# If dconf-editor is installed change various settings
+if [ $dconfInstalled ]; then
     # Import terminal profiles from the profiles/ directory
     # Exporting profiles can be done with:
     # dconf dump /org/gnome/terminal/legacy/profiles:/:<profileid>/ > <profileid>
