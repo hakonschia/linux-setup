@@ -1,0 +1,13 @@
+[/]
+bold-is-bright=true
+default-size-columns=100
+bold-color='rgb(198,181,0)'
+foreground-color='rgb(152,238,255)'
+bold-color-same-as-fg=false
+use-theme-colors=false
+palette=['rgb(46,52,54)', 'rgb(204,0,0)', 'rgb(255,255,255)', 'rgb(196,160,0)', 'rgb(47,155,98)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(0,109,109)', 'rgb(0,168,187)', 'rgb(252,233,79)', 'rgb(15,237,75)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']
+background-color='rgb(3,55,61)'
+highlight-colors-set=true
+visible-name='Blue'
+cursor-shape='underline'
+highlight-background-color='rgb(12,234,255)'
