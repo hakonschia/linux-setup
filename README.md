@@ -2,8 +2,6 @@
 
 Stuff for when I reinstall Linux (probably only works for Ubuntu, or similar distros).
 
-If you've stumbled across this repo and you're not me feel, free to suggest improvements if you feel like it. I'm sure there's a lot to improve here :)
-
 ## Run
 Clone the repository with ```git clone https://github.com/hakonschia/linux-setup.git```
 
