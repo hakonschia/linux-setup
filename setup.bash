@@ -71,21 +71,40 @@ if [ $dconfInstalled ]; then
     # Exporting profiles can be done with:
     # dconf dump /org/gnome/terminal/legacy/profiles:/:<profileid>/ > <profileid>
 
+    profileList=$(gsettings get org.gnome.Terminal.ProfilesList list)
+
+    # Remove the last bracket "['23vfewf-2f32f']" becomes "['23vfewf-2f32f'"
+    profileList=${profileList:0:-1}
+
     for profile in $(find profiles/ -type f); do
-        name=$(basename $profile) # The name of the actual file (not the entire path)
+        # TODO: Checking against duplicates
+        # Will now add duplicate entries to the list, so it will say you have multiple of the same profile
+
+        name=$(basename $profile) # The name of the actual file, ie. the profile ID (not the entire path)
         dconf load /org/gnome/terminal/legacy/profiles:/:$name/ < $profile
+
+
+        profileList="$profileList, '$name'" # Add the profile to the list
+
+        # Need to add the profile name to org.gnome.terminal.legacy.profiles.list
     done
+
+    profileList="$profileList]" # Readd the bracket
+
+    gsettings set org.gnome.Terminal.ProfilesList list "$profileList"
+
 
     # Cycles through windows if mutliple of the same are open
     # IE. if multiple chrome windows are open, cycle through them when clicked on the taskbar
     # Other values can be found in dconf-editor and by following org.gnome.shell...
     gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'cycle-windows'
+    
     gsettings set org.gnome.desktop.interface clock-show-seconds true # Show seconds in clock on top
     gsettings set org.gnome.desktop.interface clock-show-weekday true # Show what day it is in clock on top (mo, tu etc.)
 fi
 
 
-# Add /opt/lampp to path (through bashrc) if it's not there
+# Add /opt/lampp to path (throughzg bashrc) if it's not there
 # This allows the usage of "xampp start" from anywhere
 # TODO: Need to do something with sudoers, since xampp needs sudo and sudo cant be called from everywhere
 if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
@@ -93,4 +112,4 @@ if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
 fi
 
 
-echo "Restart your terminal for changes to appear" # Source ~/.bashrc doesn't seem to work in a script
+echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(

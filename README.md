@@ -8,7 +8,7 @@ Clone the repository with ```git clone https://github.com/hakonschia/linux-setup
 Go into the directory and run the script with ```./setup.bash``` .
 
 ### Options
-**-d** Downloads various packages as well
+**-d** Downloads various packages (needs root)
 
 ## Profiles
 Terminal profiles are stored as its ID (from dconf-editor) in [profiles](profiles/)
