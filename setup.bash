@@ -109,6 +109,29 @@ fi
 # TODO: Need to do something with sudoers, since xampp needs sudo and sudo cant be called from everywhere
 if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
     echo -e "export PATH=$PATH:/opt/lampp\n" >> ~/.bashrc
+
+    if [[ $(id -u) -eq 0 ]]; then
+        sudoers=$(cat /etc/sudoers | grep secure_path)
+
+        echo ${sudoers:0:-1}
+
+        if [[ $sudoers != *":/opt/lampp"* ]]; then
+            # Remove the double quote at the end, add :/opt/lampp and a new double qoute
+            sudoersNew="${sudoers:0:-1}:/opt/lampp\""
+
+            # Edit the line matching what was in the secure_path line, and change it to the new one
+            # sed -i s/<pattern>/<replacement>/a <file>
+            # -i = inline edit
+            # s = substitution
+            # pattern is the regex to match
+            # replacement is what should it be replaced by
+
+            # Use the old as the pattern to match against, and the new to replace it
+            sed -i "s|$sudoers|$sudoersNew|g" "/etc/sudoers"
+        fi           
+    else
+        echo "Run with sudo to add xampp to sudoers"
+    fi
 fi
 
 
