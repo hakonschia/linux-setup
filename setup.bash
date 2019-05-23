@@ -104,16 +104,14 @@ if [ $dconfInstalled ]; then
 fi
 
 
-# Add /opt/lampp to path (throughzg bashrc) if it's not there
+# Add /opt/lampp to path (throughg bashrc) if it's not there
 # This allows the usage of "xampp start" from anywhere
-# TODO: Need to do something with sudoers, since xampp needs sudo and sudo cant be called from everywhere
 if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
     echo -e "export PATH=$PATH:/opt/lampp\n" >> ~/.bashrc
 
-    if [[ $(id -u) -eq 0 ]]; then
+    # To use sudo <command> the exectuable needs to be in a path in secure_path in /etc/sudoers
+    if [[ $(id -u) -eq 0 ]]; then # Is root
         sudoers=$(cat /etc/sudoers | grep secure_path)
-
-        echo ${sudoers:0:-1}
 
         if [[ $sudoers != *":/opt/lampp"* ]]; then
             # Remove the double quote at the end, add :/opt/lampp and a new double qoute
