@@ -6,12 +6,13 @@
 # Options:
 # -d: Downloads packages and installs various applications
 
+uid=$(id -u) # The user ID of the user running the program (used to check for sudo)
 
 # Probably the worst way of checking for options :)
 if [ $# -gt 0 ]; then
     case $1 in
         "-d")
-            if [ $(id -u) -eq 0 ]; then # Is ran as root
+            if [ $uid -eq 0 ]; then # Is ran as root
                 echo "Downloading.."
 
                 # Download packages
@@ -51,7 +52,7 @@ if [ $(dpkg-query -W -f='${Status}' dconf-editor 2>/dev/null | grep -c "ok insta
 
     case $answer in
         "y")
-            if [ $(id -u) -eq 0 ]; then # is root, install dconf-editor
+            if [ $uid -eq 0 ]; then # is root, install dconf-editor
                 apt install dconf-editor
                 dconfInstalled=true
             else
@@ -111,7 +112,7 @@ if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
 fi
 
 # To use sudo <command> the exectuable needs to be in a path in secure_path in /etc/sudoers
-if [[ $(id -u) -eq 0 ]]; then # Is root
+if [[ $uid -eq 0 ]]; then # Is root
     sudoers=$(cat /etc/sudoers | grep secure_path)
 
     if [[ $sudoers != *":/opt/lampp"* ]]; then
@@ -132,5 +133,14 @@ else
     echo "Run with sudo to add xampp to sudoers"
 fi
 
+
+# Installs some gnome tools and echos where to go to install multi monitors add-on
+if [[ $uid -eq 0 ]]; then
+    apt install gnome-tweak-tool
+    apt install chrome-gnome-shell
+
+    echo "Go to https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep"
+    echo "Go to https://extensions.gnome.org/extension/921/multi-monitors-add-on/"
+fi
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
