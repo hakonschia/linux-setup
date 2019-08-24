@@ -132,5 +132,7 @@ if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
     fi
 fi
 
+alias please='sudo $(history -p !!)' # Instead of boring sudo !! when forgetting sudo, have some manners ask nicely instead
+
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
