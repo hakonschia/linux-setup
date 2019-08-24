@@ -6,12 +6,13 @@
 # Options:
 # -d: Downloads packages and installs various applications
 
+uid=$(id -u) # The user ID of the user running the program (used to check for sudo)
 
 # Probably the worst way of checking for options :)
 if [ $# -gt 0 ]; then
     case $1 in
         "-d")
-            if [ $(id -u) -eq 0 ]; then # Is ran as root
+            if [ $uid -eq 0 ]; then # Is ran as root
                 echo "Downloading.."
 
                 # Download packages
@@ -51,7 +52,7 @@ if [ $(dpkg-query -W -f='${Status}' dconf-editor 2>/dev/null | grep -c "ok insta
 
     case $answer in
         "y")
-            if [ $(id -u) -eq 0 ]; then # is root, install dconf-editor
+            if [ $uid -eq 0 ]; then # is root, install dconf-editor
                 apt install dconf-editor
                 dconfInstalled=true
             else
@@ -108,31 +109,40 @@ fi
 # This allows the usage of "xampp start" from anywhere
 if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
     echo -e "export PATH=$PATH:/opt/lampp\n" >> ~/.bashrc
+fi
 
-    # To use sudo <command> the exectuable needs to be in a path in secure_path in /etc/sudoers
-    if [[ $(id -u) -eq 0 ]]; then # Is root
-        sudoers=$(cat /etc/sudoers | grep secure_path)
+# To use sudo <command> the exectuable needs to be in a path in secure_path in /etc/sudoers
+if [[ $uid -eq 0 ]]; then # Is root
+    sudoers=$(cat /etc/sudoers | grep secure_path)
 
-        if [[ $sudoers != *":/opt/lampp"* ]]; then
-            # Remove the double quote at the end, add :/opt/lampp and a new double qoute
-            sudoersNew="${sudoers:0:-1}:/opt/lampp\""
+    if [[ $sudoers != *":/opt/lampp"* ]]; then
+        # Remove the double quote at the end, add :/opt/lampp and a new double qoute
+        sudoersNew="${sudoers:0:-1}:/opt/lampp\""
 
-            # Edit the line matching what was in the secure_path line, and change it to the new one
-            # sed -i s/<pattern>/<replacement>/a <file>
-            # -i = inline edit
-            # s = substitution
-            # pattern is the regex to match
-            # replacement is what should it be replaced by
+        # Edit the line matching what was in the secure_path line, and change it to the new one
+        # sed -i s/<pattern>/<replacement>/a <file>
+        # -i = inline edit
+        # s = substitution
+        # pattern is the regex to match
+        # replacement is what should it be replaced by
 
-            # Use the old as the pattern to match against, and the new to replace it
-            sed -i "s|$sudoers|$sudoersNew|g" "/etc/sudoers"
-        fi           
-    else
-        echo "Run with sudo to add xampp to sudoers"
-    fi
+        # Use the old as the pattern to match against, and the new to replace it
+        sed -i "s|$sudoers|$sudoersNew|g" "/etc/sudoers"
+    fi           
+else
+    echo "Run with sudo to add xampp to sudoers"
 fi
 
 alias please='sudo $(history -p !!)' # Instead of boring sudo !! when forgetting sudo, have some manners ask nicely instead
 
+
+# Installs some gnome tools and echos where to go to install multi monitors add-on
+if [[ $uid -eq 0 ]]; then
+    apt install gnome-tweak-tool
+    apt install chrome-gnome-shell
+
+    echo "Go to https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep"
+    echo "Go to https://extensions.gnome.org/extension/921/multi-monitors-add-on/"
+fi
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
