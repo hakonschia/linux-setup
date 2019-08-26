@@ -133,8 +133,6 @@ else
     echo "Run with sudo to add xampp to sudoers"
 fi
 
-alias please='sudo $(history -p !!)' # Instead of boring sudo !! when forgetting sudo, have some manners ask nicely instead
-
 
 # Installs some gnome tools and echos where to go to install multi monitors add-on
 if [[ $uid -eq 0 ]]; then
@@ -144,5 +142,10 @@ if [[ $uid -eq 0 ]]; then
     echo "Go to https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep"
     echo "Go to https://extensions.gnome.org/extension/921/multi-monitors-add-on/"
 fi
+
+
+# TODO: Doesnt work :)
+echo 'alias please="sudo $(history -p !!)"' >> ~/.bashrc# Instead of boring sudo !! when forgetting sudo, have some manners and ask nicely instead
+
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
