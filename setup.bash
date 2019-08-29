@@ -105,7 +105,7 @@ if [ $dconfInstalled ]; then
 fi
 
 
-# Add /opt/lampp to path (throughg bashrc) if it's not there
+# Add /opt/lampp to path (through bashrc) if it's not there
 # This allows the usage of "xampp start" from anywhere
 if [[ $PATH != *":/opt/lampp"* ]] || [[ $bashrc != *":/opt/lampp"* ]]; then
     echo -e "export PATH=$PATH:/opt/lampp\n" >> ~/.bashrc
@@ -144,8 +144,13 @@ if [[ $uid -eq 0 ]]; then
 fi
 
 
-# TODO: Doesnt work :)
-echo 'alias please="sudo $(history -p !!)"' >> ~/.bashrc# Instead of boring sudo !! when forgetting sudo, have some manners and ask nicely instead
-
+# Instead of boring sudo !! when forgetting sudo, have some manners and ask nicely instead
+# '"'"' = end the first string, add a new string with double quotes with a single quote in it
+# concatinate that again with a new string
+# It turns out as: alias please='sudo $(history -p !!)'
+if [[ $bashrc != *"alias please"* ]]; then
+    # -e to print \n as newline
+    echo -e '\nalias please='"'"'sudo $(history -p !!)'"'"'' >> ~/.bashrc
+fi
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
