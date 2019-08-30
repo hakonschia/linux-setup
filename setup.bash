@@ -152,5 +152,10 @@ if [[ $bashrc != *"alias please"* ]]; then
     # -e to print \n as newline
     echo -e '\nalias please='"'"'sudo $(history -p !!)'"'"'' >> ~/.bashrc
 fi
+# Add alias for both please and pls
+if [[ $bashrc != *"alias pls"* ]]; then
+    echo -e '\nalias pls='"'"'sudo $(history -p !!)'"'"'' >> ~/.bashrc
+fi
+
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
