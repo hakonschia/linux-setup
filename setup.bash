@@ -103,6 +103,8 @@ if [ "$dconfInstalled" ]; then
     gsettings set org.gnome.desktop.interface clock-show-date true # Show the date (sep. 3 etc.)
     gsettings set org.gnome.desktop.interface clock-show-seconds true # Show seconds in clock on top
     gsettings set org.gnome.desktop.interface clock-show-weekday true # Show what day it is in clock on top (mo, tu etc.)
+
+    gsettings set org.gnome.desktop.calendar show-weekdate true # Show week number in the calendar
 fi
 
 
