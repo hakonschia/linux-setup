@@ -158,5 +158,10 @@ if [[ "$bashrc" != *"alias pls"* ]]; then
     echo -e '\nalias pls='"'"'sudo $(history -p !!)'"'"'' >> ~/.bashrc
 fi
 
+# Open the file explorer with "open" (only curernt location)
+if [[ "$bashrc" != *"alias open"* ]]; then
+    echo -e "\nalias open='xdg-open .'" >> ~/.bashrc
+fi
+
 
 echo "Restart your terminal for changes to appear" # source ~/.bashrc doesn't seem to work in a script :(
