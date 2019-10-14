@@ -24,11 +24,11 @@ if [ $# -gt 0 ]; then
                 apt install dconf-editor # A lot of different settings
                 echo -e "\\n\\n\\tDownloading 'dconf-editor'"
 
-                apt install python3-dev python3-pip python3-setuptools
-                echo -e "\\n\\n\\tDownloading python tools"
+                #apt install python3-dev python3-pip python3-setuptools
+                #echo -e "\\n\\n\\tDownloading python tools"
 
-                pip3 install thefuck
-                echo -e "\\n\\n\\tDownloading 'fuck' from https://github.com/nvbn/thefuck"
+                #pip3 install thefuck
+                #echo -e "\\n\\n\\tDownloading 'fuck' from https://github.com/nvbn/thefuck"
             else
                 echo "Error: -d needs root permissions, run with sudo"
             fi
